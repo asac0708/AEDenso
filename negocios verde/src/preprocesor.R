@@ -1,0 +1,114 @@
+
+# Preprocesamiento de datos -----------------------------------------------
+
+datos_filtrados_departamento <- datos_departamento %>%
+  filter(AÑO %in% c(2019, 2020, 2021) & `ÁREA GEOGRÁFICA` == "Total")
+
+columnas_a_eliminar <- c("Descripción..Del.Negocio.Verde.", 
+                         "RAZÓN.SOCIAL..Del.Negocio.Verde.",
+                         "NOMBRE.REPRESENTANTE..Del.Negocio.Verde.",
+                         "Producto.Principal..Que.promueve.el.Negocio.Verde.",
+                         "MUNICIPIO..Donde.se.encuentra.el.Negocio.Verde.",
+                         "AUTORIDAD.AMBIENTAL..Donde.se.encuentra.el.Negocio.Verde.")
+
+# Seleccionar las columnas que no están en la lista de columnas a eliminar
+datos_filtrados_negocios <- datos_negocios[, !(names(datos_negocios) %in% columnas_a_eliminar)]
+
+# Identificacion de variables con categorias significativas
+unique(datos_filtrados_negocios$CATEGORÍA..Del.Negocio.Verde.)  # 3 
+unique((datos_filtrados_negocios$SECTOR..Al.cual.pertenece.el.Negocio.Verde.)) # 13
+unique(datos_filtrados_negocios$REGIÓN..Donde.se.encuentra.el.Negocio.Verde.) # 11
+unique(datos_filtrados_negocios$CATEGORÍA.COMERCIAL..Al.cual.pertenece.el.Negocio.Verde.) # 22
+unique(datos_filtrados_negocios$SUBSECTOR..Al.cual.pertenece.el.Negocio.Verde.) # 23
+unique(datos_filtrados_negocios$DEPARTAMENTO..Donde.se.encuentra.el.Negocio.Verde. ) #33
+
+datos_filtrados_negocios <- datos_filtrados_negocios %>%
+  mutate(REGIÓN..Donde.se.encuentra.el.Negocio.Verde. = case_when(
+    REGIÓN..Donde.se.encuentra.el.Negocio.Verde. %in% c("eje cafetero y Antioquia", "Eje cafetero y Antioquia", "Eje Cafetero y Antioquia") ~ "Eje Cafetero y Antioquia",
+    TRUE ~ REGIÓN..Donde.se.encuentra.el.Negocio.Verde.
+  ))
+
+datos_filtrados_negocios_años_tot <- datos_filtrados_negocios
+datos_filtrados_negocios <- datos_filtrados_negocios %>%
+  filter(AÑO...Año.de.registro. %in% c(2020, 2021))
+
+colnames(datos_filtrados_negocios)
+colnames(datos_filtrados_departamento)
+unique(datos_filtrados_negocios$DEPARTAMENTO..Donde.se.encuentra.el.Negocio.Verde.)
+
+# Codigos departamento en tabla de negocios -------------------------------
+
+# Crear un diccionario de departamentos con sus códigos
+diccionario_departamentos <- list(
+  "Bolívar" = "13",
+  "Meta" = "50",
+  "Archipiélago de San Andrés, Providencia y Santa Catalina" = "88",
+  "Bogotá, D.C." = "11",
+  "Tolima" = "73",
+  "Caldas" = "17",
+  "Casanare" = "85",
+  "Antioquia" = "05",
+  "Caquetá" = "18",
+  "Magdalena" = "47",
+  "Quindío" = "63",
+  "Amazonas" = "91",
+  "Putumayo" = "86",
+  "Arauca" = "81",
+  "Atlántico" = "08",
+  "Boyacá" = "15",
+  "Cauca" = "19",
+  "Cundinamarca" = "25",
+  "Cesar" = "20",
+  "Chocó" = "27",
+  "Córdoba" = "23",
+  "Guainía" = "94",
+  "Guaviare" = "95",
+  "Huila" = "41",
+  "La Guajira" = "44",
+  "Nariño" = "52",
+  "Santander" = "68",
+  "Sucre" = "70",
+  "Valle del Cauca" = "76",
+  "Vaupés" = "97",
+  "Vichada" = "99",
+  "Norte de Santander" = "54",
+  "Risaralda" = "66"
+)
+
+# Agregar una nueva columna con los códigos de departamento
+datos_filtrados_negocios$CODIGO_DEPARTAMENTO <- diccionario_departamentos[datos_filtrados_negocios$DEPARTAMENTO]
+
+
+# Cuentas de negocios por departamento ------------------------------------
+
+# Contar la cantidad de veces que se repite cada combinación de departamento y año
+conteo <- aggregate(. ~ CODIGO_DEPARTAMENTO + DEPARTAMENTO..Donde.se.encuentra.el.Negocio.Verde. + AÑO...Año.de.registro., 
+                    data = datos_filtrados_negocios, FUN = length)
+
+# Renombrar la columna de conteo
+colnames(conteo)[4] <- "Cantidad"
+
+# Seleccionar solo las columnas necesarias
+conteo <- conteo[, c("CODIGO_DEPARTAMENTO", "DEPARTAMENTO..Donde.se.encuentra.el.Negocio.Verde.", "AÑO...Año.de.registro.", "Cantidad")]
+
+
+# Tabla para per capita ---------------------------------------------------
+# Realizar unión entre la tabla de conteo y la tabla de departamentos
+conteo_departamentos <- merge(conteo, datos_filtrados_departamento, 
+                              by.x = c("CODIGO_DEPARTAMENTO", "AÑO...Año.de.registro."), 
+                              by.y = c("DP", "AÑO"), all.x = TRUE)
+
+# Seleccionar solo las columnas necesarias
+conteo_departamentos <- conteo_departamentos[, c("CODIGO_DEPARTAMENTO", 
+                                                 "DEPARTAMENTO..Donde.se.encuentra.el.Negocio.Verde.", 
+                                                 "AÑO...Año.de.registro.", 
+                                                 "Cantidad", 
+                                                 "Población")]
+
+# Añadir columna de negocios per cápita
+conteo_departamentos$Negocios_per_capita <- conteo_departamentos$Cantidad / conteo_departamentos$Población
+
+
+
+
+
