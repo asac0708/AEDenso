@@ -16,3 +16,9 @@ energia_fosil <- read.csv("../input/MedioAmbiente/porcentaje_energia_fosil.csv",
 
 #Emisiones co2 per capita toneladas
 emisiones_co2 <- read.csv("../input/MedioAmbiente/emisiones_co2_per_capita_toneladas.csv", skip=4)
+
+
+
+agriculture_land <- read.csv("../input/co2/agricultural_land(% of land area).csv", skip=3)
+electric_consumption <- read.csv("../input/co2/electric_consumption(kWh per capita).csv", skip=3)
+#population_growth <- read.csv("../input/population_growth/popularion_growth.csv", skip=3)
