@@ -1,24 +1,25 @@
 faces(base_cancer, fill = FALSE)
 
-jurisdiccion_Males <- ggplot(base_cancer, aes(y = Males, x = Females)) +
+Total_Females <- ggplot(base_cancer, aes(y = Total, x = Females)) +
   geom_point() +
-  xlim(c(0, 2500))
+  xlim(c(0, 5000)) +
+  ylim(c(0, 5000))
 
-jurisdiccion_Males <- ggplot(base_cancer, aes(y = Jurisdiction, x = Males)) +
+Total_Males <- ggplot(base_cancer, aes(y = Total, x = Males)) +
   geom_point() +
-  xlim(c(0, 2500))
+  xlim(c(0, 2500)) +
+  ylim(c(0, 5000))
 
-jurisdiccion_Females <- ggplot(base_cancer, aes(y = Jurisdiction, x = Females)) +
+jurisdiccion_Males <- ggplot(base_cancer, aes(y = Total, x = Whites)) +
   geom_point() +
-  xlim(c(0, 2500))
+  xlim(c(0, 5000)) +
+  ylim(c(0, 5000))
 
-jurisdiccion_Whites <- ggplot(base_cancer, aes(y = Jurisdiction, x = Whites)) +
+jurisdiccion_Males <- ggplot(base_cancer, aes(y = Total, x = Blacks)) +
   geom_point() +
-  xlim(c(0, 4000))
+  xlim(c(0, 5000)) +
+  ylim(c(0, 5000))
 
-jurisdiccion_Blacks <- ggplot(base_cancer, aes(y = Jurisdiction, x = Blacks)) +
-  geom_point() +
-  xlim(c(0, 2000))
 
 Male_Female <- ggplot(base_cancer, aes(x = Males, y = Females)) +
   geom_point() +
@@ -36,4 +37,4 @@ Black_White <- ggplot(base_cancer, aes(x = Whites, y = Blacks)) +
        y = "Blacks") +
   theme_minimal() + 
   xlim(c(0, 2000)) +
-  ylim(c(0, 500))
+  ylim(c(0, 2500))
