@@ -1,5 +1,5 @@
-model1 <- lm(data = reg_houses,
-            SalePrice ~ log(LotArea) + year_since_build +year_since_remod + CentralAir + OverallQual)
+model1 <- lm(data = base_cancer,
+            Total ~ Females + Males + Blacks + Whites)
 
 summary(model1)
 
@@ -31,5 +31,5 @@ bptest(model1)
 shapiro.test(model1$residuals)
 
 # Estudio de los residuos
-plot(model1 )
+
 # Q-Q plot: En y tiene los residuios estandarizados, y en x los quantiles 

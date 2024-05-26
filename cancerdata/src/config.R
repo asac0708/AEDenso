@@ -1,5 +1,5 @@
 rm(list=ls())
-setwd("C:/Users/dasav/Documents/Universidad/V semestre/AED/Hackaton/Reto1/src")
+setwd("D:/Archivos de clases/Universidad/V Semestre/AED/Hackaton/Reto1/src")
 
 library('readr')
 library('FactoClass')
@@ -8,4 +8,5 @@ library('ade4')
 library('dplyr')
 library('ggplot2')
 library('aplpack')
-
+library('plotly')
+library('lmtest')
