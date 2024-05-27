@@ -1,9 +1,9 @@
-base_cancer <- data_cancer[, 2:8]
-rownames(base_cancer) <- data_cancer$Jurisdiction
-base_cancer <- base_cancer[-1, ]
+base_cancer <- data_cancer[, 2:8] # Quitando la columna de las jurisdicciones
+rownames(base_cancer) <- data_cancer$Jurisdiction # Cambiarle el nombre a las filas
+base_cancer <- base_cancer[-1, ] #Quitandole variables que alteran los resultados
 
 
-pca <- PCA(base_cancer, ncp = 3) # Cuantas dimensiones queremos obtener 
+pca <- PCA(base_cancer) # Cuantas dimensiones queremos obtener 
 
 
 # Valores propios ---------------------------------------------------------
@@ -70,7 +70,7 @@ fisher.test(Total_Blacks)
 # Sin los valores Nulos----------------------------------------------------------------------------------------
 
 
-base_cancer2 <- na.omit(base_cancer)
+base_cancer2 <- na.omit(data_cancer)
 pca <- PCA(base_cancer2, ncp = 3)  
 
 # Valores propios
