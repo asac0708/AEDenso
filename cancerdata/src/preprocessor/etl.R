@@ -54,7 +54,9 @@ chisq.test(Total_Whites)
 # Sin los valores Nulos----------------------------------------------------------------------------------------
 
 
-base_cancer2 <- na.omit(data_cancer)
+data_cancer2 <- na.omit(data_cancer)
+base_cancer2 <- data_cancer2[, 2:8] # Quitando la columna de las jurisdicciones
+rownames(base_cancer2) <- data_cancer2$Jurisdiction # Cambiarle el nombre a las filas
 pca <- PCA(base_cancer2, ncp = 3)  
 
 # Valores propios
