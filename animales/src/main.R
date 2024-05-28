@@ -1,5 +1,3 @@
-getwd()
-setwd("C:/Users/sofia/Documents/GitHub/AEDenso/animales/src/")
 
 # Instalar y cargar paquetes necesarios
 install.packages("FactoMineR")
@@ -11,6 +9,9 @@ library(factoextra)
 library(dplyr)
 library(ggplot2)
 library(gplots)
+
+getwd()
+setwd("C:/Users/sofia/Documents/GitHub/AEDenso/animales/src/")
 
 datos <- read.csv("../input/Listado_oficial_de_las_especies_silvestres_amenazadas_de_la_diversidad_biol_gica_colombiana_continental_y_marino_costera_-_Resoluci_n_0126_de_2024_20240526.csv")
 

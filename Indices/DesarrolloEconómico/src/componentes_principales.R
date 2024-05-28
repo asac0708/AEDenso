@@ -38,11 +38,13 @@ ggplot(data_paises, aes(x = PC1, y = PC2, label = Country)) +
   geom_text(size = 3, vjust = 1.5) +  # Agregar etiquetas de países
   labs(x = "Componente Principal 1", y = "Componente Principal 2", title = "Gráfico de Dispersión de Países en ACP")
 
-pc1 <- apply(pca_resultado$rotation[,1]*datos_limpios,1,sum)
-pc2 <- apply(pca_resultado$rotation[,2]*datos_limpios,1,sum)
+pc1_economia <- apply(pca_resultado$rotation[,1]*datos_limpios,1,sum)
+pc2_economia <- apply(pca_resultado$rotation[,2]*datos_limpios,1,sum)
 
-datos_limpios$pc1 <- pc1
-datos_limpios$pc2 <- pc2
+datos_limpios$pc1_economia <- pc1_economia
+datos_limpios$pc2_economia <- pc2_economia
 
-plot(datos_limpios$pc1,datos_limpios$pc2)
- º
+plot(datos_limpios$pc1_economia,datos_limpios$pc2_economia)
+
+tabla_economia <- datos_limpios
+write.csv(tabla_economia, "tabla_economia.csv", row.names = TRUE)

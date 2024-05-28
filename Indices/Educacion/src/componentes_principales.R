@@ -38,10 +38,13 @@ ggplot(data_paises, aes(x = PC1, y = PC2, label = Country)) +
   geom_text(size = 3, vjust = 1.5) +  # Agregar etiquetas de países
   labs(x = "Componente Principal 1", y = "Componente Principal 2", title = "Gráfico de Dispersión de Países en ACP")
 
-pc1 <- apply(pca_resultado$rotation[,1]*datos_limpios,1,sum)
-pc2 <- apply(pca_resultado$rotation[,2]*datos_limpios,1,sum)
+pc1_educacion <- apply(pca_resultado$rotation[,1]*datos_limpios,1,sum)
+pc2_educacion <- apply(pca_resultado$rotation[,2]*datos_limpios,1,sum)
 
-datos_limpios$pc1 <- pc1
-datos_limpios$pc2 <- pc2
+datos_limpios$pc1_educacion <- pc1_educacion
+datos_limpios$pc2_educacion <- pc2_educacion
 
-plot(datos_limpios$pc1,datos_limpios$pc2)
+plot(datos_limpios$pc1_educacion,datos_limpios$pc2_educacion)
+
+# Exportar el dataset a un archivo CSV
+write.csv(datos_limpios, "tabla_educacion.csv", row.names = TRUE)

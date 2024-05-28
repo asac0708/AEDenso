@@ -1,4 +1,5 @@
 # Correlaciones -----------------------------------------------------------
+tabla_unida$Country.Name <- NULL
 
 # Seleccionar las columnas de la 2 a la 6
 datos_seleccionados <- tabla_unida
@@ -38,10 +39,12 @@ ggplot(data_paises, aes(x = PC1, y = PC2, label = Country)) +
   geom_text(size = 3, vjust = 1.5) +  # Agregar etiquetas de países
   labs(x = "Componente Principal 1", y = "Componente Principal 2", title = "Gráfico de Dispersión de Países en ACP")
 
-pc1 <- apply(pca_resultado$rotation[,1]*datos_limpios,1,sum)
-pc2 <- apply(pca_resultado$rotation[,2]*datos_limpios,1,sum)
+pc1_ambiental <- apply(pca_resultado$rotation[,1]*datos_limpios,1,sum)
+pc2_ambiental <- apply(pca_resultado$rotation[,2]*datos_limpios,1,sum)
 
-datos_limpios$pc1 <- pc1
-datos_limpios$pc2 <- pc2
+datos_limpios$pc1_ambiental <- pc1_ambiental
+datos_limpios$pc2_ambiental <- pc2_ambiental
 
 plot(datos_limpios$pc1,datos_limpios$pc2)
+write.csv(datos_limpios, "datos_ambiental.csv", row.names = TRUE)
+
