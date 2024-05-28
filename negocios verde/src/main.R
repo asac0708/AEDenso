@@ -1,6 +1,6 @@
 # main.R
 getwd()
-setwd("C:/Users/sofia/Documents/Hackaton Datos/negocios verde/src/")
+setwd("C:/Users/sofia/Documents/GitHub/AEDenso/Indices/AnalisisConjunto")
 
 
 # Cargar librerias
