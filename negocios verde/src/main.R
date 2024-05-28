@@ -1,7 +1,6 @@
 # main.R
 getwd()
-setwd("C:/Users/sofia/Documents/GitHub/AEDenso/Indices/AnalisisConjunto")
-
+setwd("C:/Users/sofia/Documents/GitHub/AEDenso/negocios verde/src/")
 
 # Cargar librerias
 source("../src/config.R")

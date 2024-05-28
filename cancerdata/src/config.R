@@ -1,5 +1,4 @@
 rm(list=ls())
-setwd("D:/Archivos de clases/Universidad/V Semestre/AED/Hackaton/Reto1/src")
 
 library('readr')
 library('FactoClass')
