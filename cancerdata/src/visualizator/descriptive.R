@@ -10,15 +10,16 @@ Total_Males <- ggplot(base_cancer, aes(y = Total, x = Males)) +
   xlim(c(0, 2500)) +
   ylim(c(0, 5000))
 
-jurisdiccion_Males <- ggplot(base_cancer, aes(y = Total, x = Whites)) +
+Total_Whites <- ggplot(base_cancer, aes(y = Total, x = Whites)) +
   geom_point() +
   xlim(c(0, 5000)) +
   ylim(c(0, 5000))
 
-jurisdiccion_Males <- ggplot(base_cancer, aes(y = Total, x = Blacks)) +
+Total_Blacks <- ggplot(base_cancer, aes(y = Total, x = Blacks)) +
   geom_point() +
   xlim(c(0, 5000)) +
   ylim(c(0, 5000))
+
 
 
 Male_Female <- ggplot(base_cancer, aes(x = Males, y = Females)) +
