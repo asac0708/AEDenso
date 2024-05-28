@@ -1,5 +1,3 @@
-#install.packages("summarytools")
-library(summarytools)
 library(ggplot2)
 library(lmtest)
 library(dplyr)
@@ -7,14 +5,9 @@ library(tidyr)
 
 
 getwd()
-setwd("C:/Users/sofia/Documents/GitHub/AEDenso/Comida/src")
-
-
+setwd("C:/Users/prestamour/Documents/GitHub/AEDenso/Comida/src")
 datos_comida <- read.csv("../input/epi_r.csv")
 
-
-
-# Filtrar las filas donde el rating es de 5.0 para tener
 # mejor conocimiento de los datos objetivo
 datos_filtrados <- datos_comida[datos_comida$rating >= 4.2, ]
 
@@ -43,103 +36,31 @@ for (i in 7:num_columnas) {
   }
 }
 
+# Calcular la media de la columna actual
+media_columna <- mean(datos_filtrados[[nombre_columna]])
+
+# Verificar si la media es mayor a 0.75
+if (media_columna > 0.5) {
+  # Agregar el nombre de la columna a la lista
+  print(media_columna)
+  columnas_altas_media <- c(columnas_altas_media, nombre_columna)
+}
+
+
 # Imprimir las columnas con medias mayores a 0.75
 if (length(columnas_altas_media) > 0) {
-  cat("Las siguientes columnas tienen una media mayor a 0.75:\n")
+  cat("Las siguientes columnas tienen una media mayor a 0.5:\n")
   print(columnas_altas_media)
 } else {
-  cat("No hay columnas con una media mayor a 0.75.\n")
+  cat("No hay columnas con una media mayor a 0.5.\n")
 }
 
 # CONCLUSION DEL PRIMER ACERCAMIENTO:
 #Al ninguna de las columnas después de la 6ta tener una media mayor al 75%, se puede concluir que estas variables NO poseen relación con el ranking.
 
+# INTENTO 2:
 
-# Segundo acercamiento ----------------------------------------------------
-
-# Crear una versión limpia de datos_filtrados sin las columnas innecesarias
-datos_limpios <- datos_comida %>% select(1:6, `bon.appétit`)
-
-
-# Eliminar filas con NA en las columnas relevantes
-datos_limpios <- datos_limpios[complete.cases(datos_limpios[, c('calories', 'protein', 'fat', 'sodium')]), ]
-
-# Crear un histograma para las calorías
-ggplot(datos_limpios, aes(x = calories)) +
-  geom_histogram(binwidth = 50, fill = "skyblue", color = "black") +
-  labs(title = "Distribución de Calorías")
-
-#Hay datos muy atipicos en la tabla, por lo cual se tomarán solo el cuantil 95.
-
-# Filtrar los datos para incluir solo aquellos dentro del cuantil 95
-datos_limpios_cuantil_95 <- datos_limpios[apply(datos_limpios[, 3:ncol(datos_limpios)], 1, function(row) {
-  all(row <= 1407)
-}), ]
-
-
-# Analisis descriptivo ----------------------------------------------------
-
-# Mostrar un resumen descriptivo de las variables
-summary(datos_limpios_cuantil_95)
-
-# Crear un histograma para las calorías
-ggplot(datos_limpios_cuantil_95, aes(x = calories)) +
-  geom_histogram(binwidth = 50, fill = "skyblue", color = "black") +
-  labs(title = "Distribución de Calorías")
-
-# Crear un histograma para la proteína
-ggplot(datos_limpios_cuantil_95, aes(x = protein)) +
-  geom_histogram(binwidth = 5, fill = "lightgreen", color = "black") +
-  labs(title = "Distribución de Proteína")
-
-# Crear un histograma para la grasa
-ggplot(datos_limpios_cuantil_95, aes(x = fat)) +
-  geom_histogram(binwidth = 5, fill = "salmon", color = "black") +
-  labs(title = "Distribución de Grasa")
-
-
-# Modelos -----------------------------------------------------------------
-
-# Ajustar el modelo de regresión lineal Todas las variables
-modelo <- lm(rating ~ bon, data = datos_limpios_cuantil_95)
-
-# Resumen del modelo
-summary(modelo)
-
-# Prueba de normalidad de los residuos
-shapiro.test(residuals(modelo))
-
-# Prueba de homocedasticidad
-bptest(modelo)
-
-# Gráficos de diagnóstico del modelo
-par(mfrow = c(2, 2))
-plot(modelo)
-
-datos_filtrados <- datos_limpios_cuantil_95[datos_limpios_cuantil_95$rating >= 5, ]
-
-
-# Crear el gráfico de dispersión
-ggplot(datos_filtrados, aes(x = calories, y = fat, color = `rating`)) +
-  geom_point() +
-  labs(title = "Scatter Plot of Rating vs. Fat",
-       x = "calories",
-       y = "Fat") +
-  theme_minimal()
-# Crear el gráfico de dispersión
-ggplot(datos_filtrados, aes(x = sodium, y = calories, color = `bon.appétit`)) +
-  geom_point() +
-  labs(title = "Scatter Plot of Rating vs. Fat",
-       x = "Rating",
-       y = "Fat") +
-  theme_minimal()
-
-ggplot(datos_limpios_cuantil_95, aes(x = as.factor(rating), y = fat)) +
-  geom_boxplot(fill = "blue", alpha = 0.5) +
-  labs(title = "Fat vs Rating",
-       x = "Rating",
-       y = "Fat") +
-  theme_minimal()
+# Vamos a intentar hacer una tabla con las columnas que tengan la mayor cantidad de datos independientemente del rating
 
 datos_comida[7:ncol(datos_comida)] <- lapply(datos_comida[7:ncol(datos_comida)], as.numeric)
 
@@ -160,14 +81,12 @@ tabla_recuento <- datos_binarios %>%
 # Verificar el resultado
 print(tabla_recuento)
 
-ggplot(tabla_recuento, aes(x = as.factor(rating), y = bon.appétit)) +
+ggplot(tabla_recuento, aes(x = as.factor(rating), y = bon.appÃ.tit)) +
   geom_boxplot(fill = "blue", alpha = 0.5) +
   labs(title = "Fat vs Rating",
        x = "Rating",
        y = "Fat") +
   theme_minimal()
-# Supongamos que 'datos_comida' es tu dataframe original
-
 
 # Convertir columnas a numéricas si es posible y aplicar el filtro
 filtro_columnas <- function(df) {
@@ -195,13 +114,46 @@ nueva_fila <- nueva_fila[colnames(datos_filtrados)]
 datos_filtrados <- bind_rows(datos_filtrados, nueva_fila)
 promedio_suma_filas <- mean(as.numeric(nueva_fila[1, sapply(nueva_fila, is.numeric)]), na.rm = TRUE)
 
+# Asumiendo que tienes un dataframe llamado 'datos_filtrados'
 
 # Seleccionar las columnas cuyo valor en la fila 9 sea menor a 500
-columnas_seleccionadas <- names(datos_filtrados[, 9][datos_filtrados[9,] < 500])
+columnas_seleccionadas <- names(datos_filtrados)[sapply(datos_filtrados[9, ], function(x) all(x > 500))]
 
 # Filtrar el dataframe para mantener solo las columnas seleccionadas
-datos_filtrados_nuevo <- select(datos_filtrados, all_of(columnas_seleccionadas))
+datos_filtrados <- select(datos_filtrados, all_of(columnas_seleccionadas))
 
 # Verificar el resultado
 print(datos_filtrados)
 
+# Eliminar la fila número 10
+datos_filtrados <- datos_filtrados[-10, ]
+# Eliminar la fila número 9
+datos_filtrados <- datos_filtrados[-9, ]
+
+# Variables importantes y sus graficos:
+ggplot(datos_filtrados, aes(x = as.factor(rating), y = num_bon.appÃ.tit)) +
+  geom_boxplot(fill = "blue", alpha = 0.5) +
+  labs(title = "Bon ápetit vs Rating",
+       x = "Rating",
+       y = "Bon ápetit") +
+  theme_minimal()
+
+ggplot(datos_filtrados, aes(x = as.factor(rating), y = num_tree.nut.free)) +
+  geom_boxplot(fill = "blue", alpha = 0.5) +
+  labs(title = "Tree nut free vs Rating",
+       x = "Rating",
+       y = "Tree nut free") +
+  theme_minimal()
+
+ggplot(datos_filtrados, aes(x = as.factor(rating), y = num_wheat.gluten.free)) +
+  geom_boxplot(fill = "blue", alpha = 0.5) +
+  labs(title = "Wheat gluten free vs Rating",
+       x = "Rating",
+       y = "Wheat gluten free") +
+  theme_minimal()
+
+# MODELO FINAL ------------------------------------------------------------
+
+modeloF <- lm(rating ~ num_bon.appÃ.tit + num_tree.nut.free + num_wheat.gluten.free, data = datos_filtrados)
+
+summary(modeloF)

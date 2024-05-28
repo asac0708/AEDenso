@@ -1,3 +1,5 @@
+setwd("C:/Users/prestamour/Documents/GitHub/AEDenso/cancerdata/src")
+getwd()
 source('config.R')
 source('reader/reader.R')
 source('preprocessor/etl.R')

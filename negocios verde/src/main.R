@@ -1,6 +1,6 @@
 # main.R
 getwd()
-setwd("C:/Users/sofia/Documents/Hackaton Datos/negocios verde/src/")
+setwd("C:/Users/prestamour/Documents/GitHub/AEDenso/negocios verde/src/")
 
 
 # Cargar librerias
