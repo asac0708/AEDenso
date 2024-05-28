@@ -1,0 +1,1 @@
+datos_comida <- read.csv("../input/epi_r.csv")
